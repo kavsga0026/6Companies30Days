@@ -1,0 +1,43 @@
+class Solution {
+    public int orangesRotting(int[][] grid) {
+        int m=grid.length;
+        int n=grid[0].length;
+        Queue<int[]> q=new LinkedList<>();
+        boolean[][] rotten=new boolean[m][n];
+        int countfresh=0;
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==2){
+                    q.add(new int[] {i,j});
+                    rotten[i][j]=true;
+                }
+                else if(grid[i][j]==1){
+                    countfresh++;
+                }
+            }
+        }
+        if(countfresh==0) return 0;
+        int timetaken=-1;
+        int[] delrow={-1,0,+1,0};
+        int[] delcol={0,+1,0,-1};
+        while(!q.isEmpty()){
+            int n1=q.size();
+            for(int i=0;i<n1;i++){
+                int[] rem=q.poll();
+                int x=rem[0];
+                int y=rem[1];
+                for(int j=0;j<4;j++){
+                    int nrow=x+delrow[j];
+                    int ncol=y+delcol[j];
+                    if(nrow>=0 && nrow<m &&       ncol>=0 && ncol<n && grid[nrow][ncol]==1 && !rotten[nrow][ncol]){
+                        q.add(new int[] {nrow,ncol});
+                        rotten[nrow][ncol]=true;
+                        countfresh--;
+                    }
+                }
+            }
+            timetaken=timetaken+1;
+        }
+        return (countfresh==0)? timetaken : -1;
+    }
+}
