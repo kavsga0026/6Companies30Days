@@ -1,0 +1,32 @@
+class Solution {
+    public String getHint(String secret, String guess) {
+        int n=secret.length();
+        StringBuilder ans=new StringBuilder();
+        int bulls=0;
+        int cows=0;
+        HashMap<Character,Integer> hm=new HashMap<>();
+        for(int i=0;i<n;i++){
+            hm.put(secret.charAt(i),hm.getOrDefault(secret.charAt(i),0)+1);
+        }
+        for(int i=0;i<n;i++){
+            if(secret.charAt(i)==guess.charAt(i)){
+                bulls++;
+                hm.put(secret.charAt(i),hm.get(secret.charAt(i))-1);
+            }
+        }
+        for(int i=0;i<n;i++){
+            if(secret.charAt(i)!=guess.charAt(i)){
+                int count=hm.getOrDefault(guess.charAt(i),0);
+                if(count!=0){
+                    cows++;
+                    hm.put(guess.charAt(i),hm.get(guess.charAt(i))-1);
+                }
+            }
+        }
+        ans.append(bulls);
+        ans.append('A');
+        ans.append(cows);
+        ans.append('B');
+        return ans.toString();
+    }
+}
