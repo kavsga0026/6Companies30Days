@@ -1,0 +1,57 @@
+class Solution {
+    public boolean isValidSudoku(char[][] board) {
+        int m=board.length;
+        int n=board[0].length;
+        for(int i=0;i<=6;i+=3){
+            for(int j=0;j<=6;j+=3){
+                if(!isvalidsubgrid(board,i,j)){
+                    return false;
+                }
+            }
+        }
+        for(int i=0;i<9;i++){
+            if(!isvalidrow(board,i) || !isvalidcolumn(board,i)){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean isvalidsubgrid(char[][] board,int x,int y){
+        HashSet<Character> hs=new HashSet<>();
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                if(hs.contains(board[x+i][y+j])){
+                    return false;
+                }
+                if(board[x+i][y+j]!='.'){
+                    hs.add(board[x+i][y+j]);
+                }
+            }
+        }
+        return true;
+    }
+    public boolean isvalidrow(char[][] board,int x){
+        HashSet<Character> hs=new HashSet<>();
+        for(int i=0;i<9;i++){
+            if(hs.contains(board[x][i])){
+                return false;
+            }
+            if(board[x][i]!='.'){
+                hs.add(board[x][i]);
+            }
+        }
+        return true;
+    }
+    public boolean isvalidcolumn(char[][] board,int y){
+        HashSet<Character> hs=new HashSet<>();
+        for(int i=0;i<9;i++){
+            if(hs.contains(board[i][y])){
+                return false;
+            }
+            if(board[i][y]!='.'){
+                hs.add(board[i][y]);
+            }
+        }
+        return true;
+    }
+}
