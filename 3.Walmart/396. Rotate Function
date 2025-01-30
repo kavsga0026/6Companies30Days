@@ -1,0 +1,27 @@
+class Solution {
+    public int maxRotateFunction(int[] nums) {
+        int n=nums.length;
+        int maxi=0;
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
+            maxi+=i*nums[i];
+        }
+        int prev=maxi;
+        int curr=maxi;
+        for(int i=1;i<n;i++){
+            curr=prev+sum-n*nums[n-i];
+            maxi=Math.max(maxi,curr);
+            prev=curr;
+        }
+        return maxi;
+        //a b c d e  
+        //f(0)=b+2c+3d+4e
+        //f(1)=a+2b+3c+4d
+        //f(2)=e+2a+3b+4c
+        //f(3)=d+2e+3a+4b
+        //f(4)=c+2d+3e+4a
+        //f(1)-f(0)=sum(nums)-5e
+        //f(2)-f(1)=a+b+c+d+e-5d
+    }
+}
