@@ -1,0 +1,42 @@
+class Solution {
+    public int maxProduct(String s) {
+        int n=s.length();
+        HashMap<Integer,Integer> pali=new HashMap<>();
+        for(int mask=1;mask<(1<<n);mask++){
+            StringBuilder sb=new StringBuilder();
+            for(int i=0;i<n;i++){
+                if((mask&(1<<i))!=0){
+                    sb.insert(0,s.charAt(i));
+                }
+            }
+            if(isPalindrome(sb.toString())){
+                pali.put(mask,sb.length());
+            }
+        }
+        int maxpdt=Integer.MIN_VALUE;
+        for(int mask1 :pali.keySet()){
+            for(int mask2 : pali.keySet()){
+                if((mask1 & mask2)==0){
+                    int len1=pali.get(mask1);
+                    int len2=pali.get(mask2);
+                    maxpdt=Math.max(len1*len2,maxpdt);
+                }
+            }
+        }
+        return maxpdt;
+    }
+    public boolean isPalindrome(String s){
+        int start=0;
+        int end=s.length()-1;
+        while(start<end){
+            if(s.charAt(start)!=s.charAt(end)){
+                return false;
+            }
+            else{
+                start++;
+                end--;
+            }
+        }
+        return true;
+    }
+}
