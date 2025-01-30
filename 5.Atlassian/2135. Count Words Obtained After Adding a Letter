@@ -1,0 +1,30 @@
+class Solution {
+    public int wordCount(String[] startWords, String[] targetWords) {
+        int n=startWords.length;
+        int m=targetWords.length;
+        HashSet<Integer> startmask=new HashSet<>();
+        for(int i=0;i<startWords.length;i++){
+            startmask.add(bitmask(startWords[i]));
+        }
+        int ans=0;
+        for(int i=0;i<targetWords.length;i++){
+            String target=targetWords[i];
+            int targetmask=bitmask(targetWords[i]);
+            for(char c : target.toCharArray()){
+                int modmask=targetmask^(1<<(c-'a'));    
+                if(startmask.contains(modmask)){
+                    ans++;
+                    break;
+                }
+            }
+        }
+        return ans;
+    }
+    public int bitmask(String word){
+        int mask=0;
+        for(char c : word.toCharArray()){
+            mask=mask | (1<<(c-'a'));
+        }
+        return mask;
+    }
+}
