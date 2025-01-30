@@ -1,0 +1,23 @@
+class Solution {
+    int mod=1_000_000_007;
+    public int minNonZeroProduct(int p) {
+        //1 2 3 4 5 6 7
+        long maxi=(1L<<p)-1;
+        long power=(maxi-1)/2;
+        long base=maxi-1;
+        long result=((pow(base,power,mod)%mod)*(maxi%mod))%mod;
+        return (int) result;
+    }
+    public long pow(long base,long power,long mod){
+        if(power==0){
+            return 1;
+        }
+        base=base%mod;
+        long temp=pow(base,power/2,mod);
+        long result=(temp*temp)%mod;
+        if(power%2!=0){
+            result=(result*base)%mod;
+        }
+        return (result+mod)%mod;
+    }
+}
