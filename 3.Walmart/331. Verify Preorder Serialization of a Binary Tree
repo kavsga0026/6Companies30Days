@@ -1,0 +1,29 @@
+class Solution {
+    public boolean isValidSerialization(String preorder) {
+        //node->left subtree->right subtree
+        //left subtree->right subtree->node
+        String[] revisedpreorder=preorder.split(",");
+        char[] chararr=new char[revisedpreorder.length];
+        int n=chararr.length;
+        for(int i=0;i<n;i++){
+            chararr[i]=revisedpreorder[i].charAt(0);
+        }
+        int slots=1;
+        for(int i=0;i<n;i++){
+            if(chararr[i]!='#'){
+                slots-=1;
+                if(slots<0){
+                    return false;
+                }
+                slots+=2;
+            }
+            else{
+                slots--;
+                if(slots<0){
+                    return false;
+                }
+            }
+        }
+        return slots==0;
+    }
+}
