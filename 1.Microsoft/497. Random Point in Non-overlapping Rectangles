@@ -1,0 +1,31 @@
+class Solution {
+    TreeMap<Integer,Integer> map;
+    int[][] arrays;
+    int sum;
+    Random rdm;
+    public Solution(int[][] rects) {
+        arrays=rects;
+        map=new TreeMap<>();
+        rdm=new Random();
+        sum=0;
+        for(int i=0;i<rects.length;i++){
+            int[] rect=rects[i];
+            sum+=(rect[2]-rect[0]+1)*(rect[3]-rect[1]+1);
+            map.put(sum,i);
+        }
+    }
+    
+    public int[] pick() {
+       int key=map.ceilingKey(rdm.nextInt(sum)+1);
+
+       return pickInRect(arrays[map.get(key)]);
+    }
+    
+    private int[] pickInRect(int[] rect) {
+        int left=rect[0];
+        int right=rect[2];
+        int down=rect[1];
+        int up=rect[3];
+        return new int[] {left+rdm.nextInt(right-left+1),down+rdm.nextInt(up-down+1)};
+    }
+}
