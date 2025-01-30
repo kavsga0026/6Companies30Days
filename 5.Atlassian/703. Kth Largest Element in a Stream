@@ -1,0 +1,35 @@
+class KthLargest {
+    int target;
+    ArrayList<Integer> stream;  
+    public KthLargest(int k, int[] nums) {
+        target=k;
+        stream=new ArrayList<>();
+        Arrays.sort(nums);
+        for(int num : nums){
+            stream.add(num);
+        }
+    }
+    public int add(int val) {
+        int idx=binarysearch(stream,val);
+        stream.add(idx,val);
+        return stream.get(stream.size()-target);
+    }
+
+    public int binarysearch(List<Integer> stream,int val){
+        int low=0;
+        int high=stream.size()-1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(stream.get(mid)==val){
+                return mid;
+            }
+            else if(stream.get(mid)<val){
+                low=mid+1;
+            }
+            else{
+                high=mid-1;
+            }
+        }
+        return low;
+    }
+}
