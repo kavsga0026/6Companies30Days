@@ -1,0 +1,25 @@
+ class Solution {
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        List<List<Integer>> ans=new ArrayList<>();
+        if(n<=45){
+            helper(n,k,1,new ArrayList<>(),ans);
+        }
+        return ans;
+    }
+    public void helper(int n,int k,int val,List<Integer> combination,List<List<Integer>> ans){
+        int size=combination.size();
+        if(size==k && n==0){
+            ans.add(new ArrayList<>(combination));
+            return;
+        }
+        for(int i=val;i<10;i++){
+            if(n<0 || size>k){
+                return;
+            }
+            combination.add(i);
+            helper(n-i,k,i+1,combination,ans);
+            combination.remove(combination.size()-1);
+        }
+        return;
+    }
+}
