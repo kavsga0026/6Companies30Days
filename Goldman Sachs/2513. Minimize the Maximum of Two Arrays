@@ -1,0 +1,45 @@
+class Solution {
+    public int minimizeSet(int divisor1, int divisor2, int uniqueCnt1, int uniqueCnt2) {
+        long low = 1;
+        long high = 2000000000; // More practical upper bound
+        while (low < high) {
+            long mid = low + (high - low) / 2;
+            if (blackbox((long)divisor1,(long) uniqueCnt1,(long) divisor2,(long) uniqueCnt2,(long) mid)) {
+                high = mid;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return (int) low;
+    }
+
+    public boolean blackbox(long d1, long c1, long d2, long c2, long num) {
+        long divByBoth = num / lcm(d1, d2);
+        long validArr1 = num / d2 - divByBoth;
+        long validArr2 = num / d1 - divByBoth;
+        long rest = num - (validArr1 + validArr2 + divByBoth);
+        
+        if (validArr1 < c1) {
+            rest -= (c1 - validArr1);
+            if (rest < 0) return false;
+        }
+        if (validArr2 < c2) {
+            rest -= (c2 - validArr2);
+            if (rest < 0) return false;
+        }
+        return true;
+    }
+
+    public long lcm(long d1, long d2) {
+        return (long) d1 * d2 / gcd(d1, d2);
+    }
+
+    public long gcd(long m, long n) {
+        while (m != 0) {
+            long temp = m;
+            m = n % m;
+            n = temp;
+        }
+        return n;
+    }
+}
