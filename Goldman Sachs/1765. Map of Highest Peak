@@ -1,0 +1,39 @@
+class Solution {
+    public int[][] highestPeak(int[][] isWater) {
+        int m=isWater.length;
+        int n=isWater[0].length;
+        int[][] height=new int[m][n];
+        for(int i=0;i<m;i++){
+            Arrays.fill(height[i],-1);
+        }
+        Queue<int[]> q=new LinkedList<>();
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                if(isWater[i][j]==1){
+                    q.offer(new int[] {i,j});
+                    height[i][j]=0;
+                }
+            }
+        }
+        int[][] dir={{1,0},{-1,0},{0,1},{0,-1}};
+        int currinc=1;
+        while(!q.isEmpty()){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                int[] rem=q.poll();
+                int x=rem[0];
+                int y=rem[1];
+                for(int j=0;j<4;j++){
+                    int nx=x+dir[j][0];
+                    int ny=y+dir[j][1];
+                    if(nx>=0 && nx<m && ny>=0 && ny<n && height[nx][ny]==-1){
+                        height[nx][ny]=currinc;
+                        q.offer(new int[] {nx,ny});
+                    }
+                }
+            }
+            currinc++;
+        }
+        return height;
+    }
+}
