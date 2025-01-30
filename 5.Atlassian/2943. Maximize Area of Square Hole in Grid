@@ -1,0 +1,36 @@
+class Solution {
+    public int maximizeSquareHoleArea(int n, int m, int[] hBars, int[] vBars) {
+        int h=hBars.length;
+        int v=vBars.length;
+        //idea is to find the maximum cnsecutive horizontal and veritcal bars 
+        int res1=computelcs(hBars);
+        int res2=computelcs(vBars);
+        int ans=2-1+Math.min(res2,res1);
+        return ans*ans;
+    }
+    public int computelcs(int[] nums){
+        int n=nums.length;
+        HashSet<Integer> hs=new HashSet<>(2*n);
+        for(int num : nums){
+            hs.add(num);
+        }
+        //1l 2 3 4 5 7
+        int maxlength=0;
+        for(int num : nums){
+            if(!hs.contains(num)){
+                continue;
+            }
+            int left=num-1;
+            int right=num+1;
+            while(hs.remove(left)){
+                left--;
+            }
+            while(hs.remove(right)){
+                right++;
+            }
+            maxlength=Math.max(maxlength,right-left-1);
+        }
+
+        return maxlength;
+    }
+}
