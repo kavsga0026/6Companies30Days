@@ -1,0 +1,34 @@
+class Solution {
+    public int maxEnvelopes(int[][] envelopes) {
+        int m=envelopes.length;
+        Arrays.sort(envelopes,(a,b)->(a[0]==b[0]? b[1]-a[1] : a[0]-b[0]));
+        List<Integer> res=new ArrayList<>();
+        for(int[] elem : envelopes){
+            if(res.isEmpty() || elem[1]>res.get(res.size()-1)){
+                res.add(elem[1]);
+            }
+            else{
+                int idx=binarysearch(elem[1],res);
+                res.set(idx,elem[1]);
+            }
+        }
+        return res.size();
+    }
+    public int binarysearch(int val,List<Integer> res){
+        int low=0;
+        int high=res.size()-1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(res.get(mid)==val){
+                return mid;
+            }
+            else if(res.get(mid)>val){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return low;
+    }
+}
