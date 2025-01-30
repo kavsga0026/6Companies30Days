@@ -1,0 +1,12 @@
+class Solution {
+    public String convertToTitle(int columnNumber) {
+        StringBuilder sb=new StringBuilder();
+        while(columnNumber>0){
+            int rem=(columnNumber-1)%26;
+            char c=(char) ('A'+rem);
+            sb.insert(0,c);
+            columnNumber=(columnNumber-1)/26;
+        }
+        return sb.toString();
+    }
+}
