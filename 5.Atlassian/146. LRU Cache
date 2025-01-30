@@ -1,0 +1,77 @@
+class Node{
+    int key;
+    int val;
+    Node prev;
+    Node next;
+    public Node(int key,int val){
+        this.key=key;
+        this.val=val;
+    }
+}
+class DLL{
+    Node head=new Node(-1,-1);
+    Node tail=new Node(-1,-1);
+    public DLL(){
+        head.next=tail;
+        tail.prev=head;
+    }
+    public void insertafterhead(Node node){
+        Node afterhead=head.next;
+        head.next=node;
+        node.next=afterhead;
+        node.prev=head;
+        afterhead.prev=node;
+    }
+    public void deletenode(Node node){
+        Node before=node.prev;
+        Node after=node.next;
+        after.prev=before;
+        before.next=after;
+    }
+}
+class LRUCache {
+    DLL dll;
+    HashMap<Integer,Node> mpp;
+    int capacity;
+    public LRUCache(int capacity) {
+        dll=new DLL();
+        mpp=new HashMap<>();
+        this.capacity=capacity;
+    }
+    
+    public int get(int key) {
+        if(mpp.containsKey(key)){
+            Node node=mpp.get(key);
+            dll.deletenode(node);
+            dll.insertafterhead(node);
+            return node.val;
+        }
+        return -1;
+    }
+    
+    public void put(int key, int value) {
+        if(mpp.containsKey(key)){
+            Node node=mpp.get(key);
+            dll.deletenode(node);
+            node.val=value;
+            dll.insertafterhead(node);
+        }
+        else{
+            if(mpp.size()==capacity){
+                Node node=dll.tail.prev;
+                dll.deletenode(node);
+                mpp.remove(node.key);
+            }
+            Node n=new Node(key,value);
+            dll.insertafterhead(n);
+            mpp.put(key,n);
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
+ */
