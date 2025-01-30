@@ -1,0 +1,57 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int amountOfTime(TreeNode root, int start) {
+        HashMap<Integer,List<Integer>> adj=new HashMap<>();
+        dfs(root,adj);
+        HashSet<Integer> visited=new HashSet<>();
+        Queue<Integer> q=new LinkedList<>();
+        q.add(start);
+        visited.add(start);
+        int timetaken=-1;
+        while(!q.isEmpty()){
+            int n=q.size();
+            for(int i=0;i<n;i++){
+                int rem=q.poll();
+                for(int ngbr : adj.get(rem)){
+                    if(!visited.contains(ngbr)){
+                        q.add(ngbr);
+                        visited.add(ngbr);
+                    }
+                }
+            }
+            timetaken++;
+        }
+        return timetaken;
+    }
+    public void dfs(TreeNode root,HashMap<Integer,List<Integer>> adj){
+        if(root==null){
+            return;
+        }
+        adj.computeIfAbsent(root.val,key->new ArrayList<>());
+        if(root.left!=null){
+            adj.get(root.val).add(root.left.val);
+            adj.computeIfAbsent(root.left.val,key->new ArrayList<>()).add(root.val);
+        }
+        if(root.right!=null){
+            adj.get(root.val).add(root.right.val);
+            adj.computeIfAbsent(root.right.val,key->new ArrayList<>()).add(root.val);
+        }
+        dfs(root.left,adj);
+        dfs(root.right,adj);
+        return;
+    }
+}
