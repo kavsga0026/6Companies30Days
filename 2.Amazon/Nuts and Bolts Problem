@@ -1,0 +1,43 @@
+class Solution {
+    void matchPairs(int n, char nuts[], char bolts[]) {
+        // code here
+        String order="!#$%&*?@^";
+        mergesort(nuts,0,n-1,order);
+        mergesort(bolts,0,n-1,order);
+        return;
+    }
+    void mergesort(char[] nums,int low,int high,String order){
+        if(low==high){
+            return;
+        }
+        int mid=(low+high)/2;
+        mergesort(nums,low,mid,order);
+        mergesort(nums,mid+1,high,order);
+        merge(nums,low,mid,high,order);
+        return;
+    }
+    void merge(char[] nums,int low,int mid,int high,String order){
+        char[] temp=new char[high-low+1];
+        int left=low;
+        int right=mid+1;
+        int idx=0;
+        while(left<=mid && right<=high){
+            if(order.indexOf(nums[left])<=order.indexOf(nums[right])){
+                temp[idx++]=nums[left++];
+            }
+            else{
+                temp[idx++]=nums[right++];
+            }
+        }
+        while(left<=mid){
+            temp[idx++]=nums[left++];
+        }
+        while(right<=high){
+            temp[idx++]=nums[right++];
+        }
+        for(int i=0;i<temp.length;i++){
+            nums[i+low]=temp[i];
+        }
+        return;
+    }
+}
