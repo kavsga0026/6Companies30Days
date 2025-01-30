@@ -1,0 +1,112 @@
+//{ Driver Code Starts
+//Initial Template for Java
+
+import java.io.*;
+import java.util.*;
+
+class GFG{
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(in.readLine());
+        while(t-- > 0){
+            int n = Integer.parseInt(in.readLine());
+            String contact[] = in.readLine().trim().split("\\s+");
+            String s = in.readLine();
+            
+            Solution ob = new Solution();
+            ArrayList<ArrayList<String>> ans = ob.displayContacts(n, contact, s);
+            for(int i = 0;i < ans.size();i++){
+                for(int j = 0;j < ans.get(i).size();j++)
+                    System.out.print(ans.get(i).get(j) + " ");
+                System.out.println();
+            }
+        
+System.out.println("~");
+}
+    }
+}
+// } Driver Code Ends
+
+
+//User function Template for Java
+class Node{
+    Node[] links;
+    ArrayList<String> contacts;
+    public Node(){
+        links=new Node[26];
+        contacts=new ArrayList<>();
+    }
+    public boolean containsKey(char ch){
+        return links[ch-'a']!=null;
+    }
+    public void put(char ch,Node node){
+        links[ch-'a']=node;
+    }
+    public Node get(char ch){
+        return links[ch-'a'];
+    }
+    public ArrayList<String> getcontacts(){
+        Collections.sort(contacts);
+        return contacts;
+    }
+    public void addcontacts(String contact){
+        if(!contacts.contains(contact)){
+            contacts.add(contact);
+        }
+    }
+}
+class Trie{
+    Node root;
+    public Trie(){
+        root=new Node();
+    }
+    public void insert(String contact){
+        Node node=root;
+        for(int i=0;i<contact.length();i++){
+            char ch=contact.charAt(i);
+            if(!node.containsKey(ch)){
+                node.put(ch,new Node());
+            }
+            node=node.get(ch);
+            node.addcontacts(contact);
+        }
+        return;
+    }
+    public ArrayList<String> searchbyprefix(String prefix){
+        Node node=root;
+        for(int i=0;i<prefix.length();i++){
+            char ch=prefix.charAt(i);
+            if(!node.containsKey(ch)){
+                return new ArrayList<>();
+            }
+            node=node.get(ch);
+        }
+        return node.getcontacts();
+    }
+}
+class Solution{
+    static ArrayList<ArrayList<String>> displayContacts(int n, String contact[], String s)
+    {
+        // code here
+        Trie trie1=new Trie();
+        for(String contact1 : contact){
+            trie1.insert(contact1);
+        }
+        ArrayList<ArrayList<String>> ans=new ArrayList<>();
+        String prefix="";
+        for(int i=0;i<s.length();i++){
+            prefix+=s.charAt(i);
+            ArrayList<String> result=trie1.searchbyprefix(prefix);
+            if(result.isEmpty()){
+                ArrayList<String> a=new ArrayList<>();
+                a.add("0");
+                ans.add(a);
+            }
+            else{
+                ans.add(result);
+            }
+        }
+        return ans;
+    }
+}
