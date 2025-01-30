@@ -1,0 +1,44 @@
+class Solution {
+    public List<Integer> beautifulIndices(String s, String a, String b, int k) {
+        List<Integer> alist=new ArrayList<>();
+        List<Integer> blist=new ArrayList<>();
+        int idx=s.indexOf(a);
+        while(idx!=-1){
+            alist.add(idx);
+            idx=s.indexOf(a,idx+1);
+        }
+        int idx1=s.indexOf(b);
+        while(idx1!=-1){
+            blist.add(idx1);
+            idx1=s.indexOf(b,idx1+1);
+        }
+        List<Integer> ans=new ArrayList<>();
+        if(alist.isEmpty() || blist.isEmpty()){
+            return ans;
+        }
+        for(int idxa : alist){
+            if(isbeautiful(idxa,blist,k)){
+                ans.add(idxa);
+            }
+        }
+        return ans;
+    }
+    public boolean isbeautiful(int val,List<Integer> list,int k){
+        int low=0;
+        int high=list.size()-1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            int temp=list.get(mid);
+            if(Math.abs(temp-val)<=k){
+                return true;
+            }
+            else if(temp>val){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return false;
+    }
+}
