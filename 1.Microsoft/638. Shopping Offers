@@ -1,0 +1,32 @@
+class Solution {
+    public int shoppingOffers(List<Integer> price, List<List<Integer>> special, List<Integer> needs) {
+        HashMap<List<Integer>,Integer> dp=new HashMap<>();
+        return helper(price,needs,special,dp);
+    }
+    public int helper(List<Integer> price,List<Integer> needs,List<List<Integer>> special,HashMap<List<Integer>,Integer> dp){
+        if(dp.containsKey(needs)) return dp.get(needs);
+        int costwithoutoffers=0;
+        for(int i=0;i<needs.size();i++){
+            costwithoutoffers+=(price.get(i)*needs.get(i));
+        }
+        for(List<Integer> offer : special){
+            boolean valid=true;
+            List<Integer> newneeds=new ArrayList<>();
+            for(int i=0;i<offer.size()-1;i++){
+                if(needs.get(i)-offer.get(i)<0){
+                    valid=false;
+                    break;
+                }
+                else{
+                    newneeds.add(needs.get(i)-offer.get(i));
+                }
+            }
+            if(!valid){
+                continue;
+            }
+            costwithoutoffers=Math.min(costwithoutoffers,offer.get(offer.size()-1)+helper(price,newneeds,special,dp));
+        }
+        dp.put(needs,costwithoutoffers);
+        return costwithoutoffers;
+    }
+}
