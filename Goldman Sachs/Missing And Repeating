@@ -1,0 +1,27 @@
+class Solution {
+    // Function to find two elements in array
+    ArrayList<Integer> findTwoElement(int arr[]) {
+        // code here
+        //1 1 2 3 4 6
+        int n=arr.length;
+        long sumn=(n*(n+1))/2;
+        long sumn2=(n*(n+1)*(2*n+1))/6;
+        long actsum=0;
+        long actsumn2=0;
+        for(int elem : arr){
+            actsum+=elem;
+            actsumn2+=elem*elem;
+        }
+        ArrayList<Integer> ans=new ArrayList<>();
+        long diff=actsum-sumn;
+        long sum=(actsumn2-sumn2)/diff;
+        long missing=(sum-diff)/2;
+        long repeating=(sum+diff)/2;
+        int m1=(int) missing;
+        int r1=(int) repeating;
+        ans.add(r1);
+        ans.add(m1);
+        
+        return ans;
+    }
+}
