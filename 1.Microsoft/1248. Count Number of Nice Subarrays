@@ -1,0 +1,21 @@
+class Solution {
+    public int numberOfSubarrays(int[] nums, int k) {
+        int n=nums.length;
+        int countnice=0;
+        HashMap<Integer,Integer> hm1=new HashMap<>();
+        hm1.put(0,1);
+        int[] nums1=new int[n];
+        for(int i=0;i<n;i++){
+            nums1[i]=nums[i]%2;
+        }
+        int currodd=0;
+        for(int i=0;i<n;i++){
+            if(nums1[i]%2==1){
+                currodd++;
+            }
+            countnice=countnice+hm1.getOrDefault(currodd-k,0);
+            hm1.put(currodd,hm1.getOrDefault(currodd,0)+1);
+        }
+        return countnice;
+    }
+}
