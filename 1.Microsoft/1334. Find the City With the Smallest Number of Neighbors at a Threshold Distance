@@ -1,0 +1,46 @@
+class Solution {
+    public int findTheCity(int n, int[][] edges, int distanceThreshold) {
+        HashMap<Integer,List<int[]>> adj=new HashMap<>();
+        for(int i=0;i<n;i++){
+            adj.computeIfAbsent(i,key->new ArrayList<>());
+        }
+        int[][] distance=new int[n][n];
+        for(int i=0;i<n;i++){
+            Arrays.fill(distance[i],Integer.MAX_VALUE);
+        }
+        for(int[] edge : edges){
+            int src=edge[0];
+            int dest=edge[1];
+            int wt=edge[2];
+            distance[src][dest]=wt;
+            distance[dest][src]=wt;
+        }
+        for(int i=0;i<n;i++){
+            distance[i][i]=0;
+        }
+        for(int middle=0;middle<n;middle++){
+            for(int s=0;s<n;s++){
+                for(int d=0;d<n;d++){
+                    if(distance[s][middle]!=Integer.MAX_VALUE && distance[middle][d]!=Integer.MAX_VALUE){
+                        distance[s][d]=Math.min(distance[s][d],distance[s][middle]+distance[middle][d]);
+                    }
+                }
+            }
+        }
+        int mincity=0;
+        int minreach=Integer.MAX_VALUE;
+        for(int i=0;i<n;i++){
+            int reach=0;
+            for(int j=0;j<n;j++){
+                if(distance[i][j]<=distanceThreshold){
+                    reach++;
+                }
+            }
+            if(reach<minreach || (minreach==reach && i>mincity)){
+                minreach=reach;
+                mincity=i;
+            }
+        }
+        return  mincity;
+    }
+}
