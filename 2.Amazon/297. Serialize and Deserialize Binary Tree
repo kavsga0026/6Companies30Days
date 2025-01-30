@@ -1,0 +1,56 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Codec {
+
+    // Encodes a tree to a single string.
+    public String serialize(TreeNode root) {
+        if(root==null) return "";
+        StringBuilder serial=new StringBuilder();
+        Queue<TreeNode> q=new LinkedList<>();
+        q.add(root);
+        while(!q.isEmpty()){
+            TreeNode rem=q.poll();
+            if(rem==null){
+                serial.append("n ");
+                continue;
+            }
+            serial.append(rem.val+" ");
+            q.add(rem.left);
+            q.add(rem.right);
+        }
+        return serial.toString();
+    }
+
+    // Decodes your encoded data to tree.
+    public TreeNode deserialize(String data) {
+        if(data=="") return null;
+        String[] words=data.split(" ");
+        int n=words.length;
+        TreeNode root=new TreeNode(Integer.parseInt(words[0]));
+        Queue<TreeNode> q=new LinkedList<>();
+        q.add(root);
+        for(int i=1;i<n;i++){
+            TreeNode rem=q.poll();
+            if(!words[i].equals("n")){
+                TreeNode left=new TreeNode(Integer.parseInt(words[i]));
+                rem.left=left;
+                q.add(left);
+            }
+            if(!words[++i].equals("n")){
+                TreeNode right=new TreeNode(Integer.parseInt(words[i]));
+                rem.right=right;
+                q.add(right);
+            }
+        }
+
+
+        return root;
+    }
+}
