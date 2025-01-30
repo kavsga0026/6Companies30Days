@@ -1,0 +1,20 @@
+class Solution {
+    final int mod=1_000_000_007;
+    public int maximumProduct(int[] nums, int k) {
+        int n=nums.length;
+        PriorityQueue<Integer> minheap=new PriorityQueue<>();
+        for(int i=0;i<n;i++){
+            minheap.add(nums[i]);
+        }
+        int maxopr=k;
+        while(maxopr-->0){
+            int smallestelem=minheap.poll();
+            minheap.add(smallestelem+1);
+        }
+        long maxpdt=1;
+        while(!minheap.isEmpty()){
+            maxpdt=(maxpdt*minheap.poll())%mod;
+        }
+        return (int) maxpdt%mod;
+    }
+}
