@@ -1,0 +1,62 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int countPairs(TreeNode root, int distance) {
+        HashMap<TreeNode,List<TreeNode>> treemap=new HashMap<>();
+        HashSet<TreeNode> leafnode=new HashSet<>();
+        traversetreetograph(root,null,treemap,leafnode);
+        int ans=0;
+        for(TreeNode leaf : leafnode){
+            Queue<TreeNode> bfsqueue=new LinkedList<>();
+            HashSet<TreeNode> seen=new HashSet<>();
+            bfsqueue.add(leaf);
+            seen.add(leaf);
+            for(int i=0;i<=distance;i++){
+                int size=bfsqueue.size();
+                for(int j=0;j<size;j++){
+                    TreeNode rem=bfsqueue.remove();
+                    if(rem.left==null && rem.right==null && rem!=leaf){
+                        ans++;
+                    }
+                    if(treemap.containsKey(rem)){
+                        for(TreeNode ngbr : treemap.get(rem)){
+                            if(!seen.contains(ngbr)){
+                                bfsqueue.add(ngbr);
+                                seen.add(ngbr);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return ans/2;
+    }
+    public void traversetreetograph(TreeNode curr,TreeNode prev,HashMap<TreeNode,List<TreeNode>> treemap,HashSet<TreeNode> leafnode){
+        if(curr==null){
+            return;
+        }
+        if(curr.left==null && curr.right==null){
+            leafnode.add(curr);
+        }
+        if(prev!=null){
+            treemap.computeIfAbsent(prev,key->new ArrayList<>()).add(curr);
+            treemap.computeIfAbsent(curr,key->new ArrayList<>()).add(prev);
+        }
+        traversetreetograph(curr.left,curr,treemap,leafnode);
+        traversetreetograph(curr.right,curr,treemap,leafnode);
+        return;
+    }
+}
