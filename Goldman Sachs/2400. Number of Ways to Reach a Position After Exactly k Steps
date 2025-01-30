@@ -1,0 +1,28 @@
+class Solution {
+    final int mod=1_000_000_007;
+    public int numberOfWays(int startPos, int endPos, int k) {
+        int[][] dp=new int[3000][k+1];
+        for(int i=0;i<3000;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        return helper(startPos,endPos,k,k,dp);
+    }
+    public int helper(int s,int e ,int k,int available,int[][] dp){
+        if(available==0){
+            if(s==e){
+                return 1;
+            }
+            return 0;
+        }
+        if(Math.abs(s-e)>available){
+            return 0;
+        }
+        if(dp[s+1000][available]!=-1){
+            return dp[s+1000][available];
+        }
+        int left=helper(s-1,e,k,available-1,dp)%mod;
+        int right=helper(s+1,e,k,available-1,dp)%mod;
+        int ways=(left+right)%mod;
+        return dp[s+1000][available]=ways;
+    }
+}
