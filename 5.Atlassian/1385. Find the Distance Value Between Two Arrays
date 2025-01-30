@@ -1,0 +1,35 @@
+class Solution {
+    public int findTheDistanceValue(int[] arr1, int[] arr2, int d) {
+        int m=arr1.length;
+        int n=arr2.length;
+        Arrays.sort(arr2);
+        int validindices=0;
+        for(int i=0;i<m;i++){
+            int idx=findclosestindex(arr1[i],arr2);
+            if(idx>=0 && idx<n && Math.abs(arr2[idx]-arr1[i])<=d){
+                validindices++;
+            }
+            else if(idx-1>=0 && idx-1<n && Math.abs(arr1[i]-arr2[idx-1])<=d){
+                validindices++;
+            }
+        }
+        return m-validindices;
+    }
+    public int findclosestindex(int val,int[] arr2){
+        int low=0;
+        int high=arr2.length-1;
+        while(low<=high){
+            int mid=low+(high-low)/2;
+            if(arr2[mid]==val){
+                return mid;
+            }
+            else if(arr2[mid]>val){
+                high=mid-1;
+            }
+            else{
+                low=mid+1;
+            }
+        }
+        return low;
+    }
+}
