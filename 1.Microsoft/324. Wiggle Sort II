@@ -1,0 +1,55 @@
+class Solution {
+    public void wiggleSort(int[] nums) {
+        int n=nums.length;
+        int[] temp=new int[n];
+        for(int i=0;i<n;i++){
+            temp[i]=nums[i];
+        }
+        mergesort(temp,0,n-1);
+        int left=(n-1)/2;
+        int right=n-1;
+        for(int i=0;i<n;i++){
+            if(i%2==0){
+                nums[i]=temp[left--];
+            }
+            else{
+                nums[i]=temp[right--];
+            }
+        }
+        return;
+    }
+    public void mergesort(int[] nums,int low,int high){
+        if(low==high){
+            return;
+        }
+        int mid=(low+high)/2;
+        mergesort(nums,low,mid);
+        mergesort(nums,mid+1,high);
+        merge(nums,low,mid,high);
+        return;
+    }
+    public void merge(int[] nums,int low,int mid,int high){
+        int left=low;
+        int right=mid+1;
+        int[] temp=new int[high-low+1];
+        int idx=0;
+        while(left<=mid && right<=high){
+            if(nums[left]<=nums[right]){
+                temp[idx++]=nums[left++];
+            }
+            else{
+                temp[idx++]=nums[right++];
+            }
+        }
+        while(left<=mid){
+            temp[idx++]=nums[left++];
+        }
+        while(right<=high){
+            temp[idx++]=nums[right++];
+        }
+        for(int i=0;i<=high-low;i++){
+            nums[i+low]=temp[i];
+        }
+        return;
+    }
+}
